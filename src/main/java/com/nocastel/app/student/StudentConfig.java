@@ -1,4 +1,4 @@
-package classes.student;
+package com.nocastel.app.student;
 
 import java.time.LocalDate;
 import java.util.List;
