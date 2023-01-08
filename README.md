@@ -44,7 +44,7 @@ TODO: Replace with introduction
 
 
 ### Local
-<!-- * [Java 8 SDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) -->
+* [Java 17 SDK]
 * [Maven](https://maven.apache.org/download.cgi)
 
 
