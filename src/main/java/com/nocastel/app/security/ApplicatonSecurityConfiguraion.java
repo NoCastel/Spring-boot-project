@@ -17,6 +17,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class ApplicatonSecurityConfiguraion {
 
     private final PasswordEncoder passwordEncoder;
+
     @Autowired
     public ApplicatonSecurityConfiguraion(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
@@ -27,6 +28,7 @@ public class ApplicatonSecurityConfiguraion {
         http
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/index.html", "/css/*", "/js/*").permitAll()
+                        .requestMatchers("/api/**").hasRole(ApplicationUserRole.STUDENT.name())
                         .anyRequest().authenticated())
                 .httpBasic();
         return http.build();
@@ -37,12 +39,12 @@ public class ApplicatonSecurityConfiguraion {
         UserDetails userJaneDoe = User.builder()
                 .username("janedoe")
                 .password(passwordEncoder.encode("password"))
-                .roles("STUDENT")
+                .roles(ApplicationUserRole.STUDENT.name())
                 .build();
         UserDetails kevin = User.builder()
                 .username("kevin")
                 .password(passwordEncoder.encode("admin123"))
-                .roles("ADMIN")
+                .roles(ApplicationUserRole.ADMIN.name())
                 .build();
         return new InMemoryUserDetailsManager(userJaneDoe, kevin);
     }

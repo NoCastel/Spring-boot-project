@@ -1,7 +1,5 @@
 package com.nocastel.app.student;
 
-import java.util.List;
-
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(path = "myapi/student")
+@RequestMapping(path = "api/student")
 public class StudentController {
     private final StudentService studentService;
 
@@ -21,9 +19,13 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-    @GetMapping
-    List<Student> getStudents() {
-        return studentService.getStudents();
+    @GetMapping(path = "{studentId}")
+    Student getStudent(@PathVariable("studentId") Long studentId) {
+        return studentService.getStudents().stream()
+        .filter(student -> studentId.equals(student.getId()))
+        .findFirst()
+        .orElseThrow(() -> new IllegalStateException());
+
     }
 
     @PostMapping
@@ -43,5 +45,32 @@ public class StudentController {
             @RequestParam(required = false) String email) {
                 studentService.updateStudent(studentId,name,email);
     }
+    //For admin role
+    // public StudentController(StudentService studentService) {
+    //     this.studentService = studentService;
+    // }
+
+    // @GetMapping
+    // List<Student> getStudents() {
+    //     return studentService.getStudents();
+    // }
+
+    // @PostMapping
+    // public void registerNewStudent(@RequestBody Student student) {
+    //     studentService.addNewStudent(student);
+    // }
+
+    // @DeleteMapping(path = "{studentId}")
+    // public void deleteStudent(@PathVariable("studentId") Long studentId) {
+    //     studentService.deleteStudent(studentId);
+    // }
+
+    // @PutMapping(path = "{studentId}")
+    // public void updateStudent(
+    //         @PathVariable("studentId") Long studentId,
+    //         @RequestParam(required = false) String name,
+    //         @RequestParam(required = false) String email) {
+    //             studentService.updateStudent(studentId,name,email);
+    // }
 
 }
