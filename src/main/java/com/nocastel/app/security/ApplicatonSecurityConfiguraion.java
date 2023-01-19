@@ -22,13 +22,12 @@ public class ApplicatonSecurityConfiguraion {
     public ApplicatonSecurityConfiguraion(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests(authorize -> authorize
+        .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/index.html", "/css/*", "/js/*").permitAll()
-                        .requestMatchers("/api/**").hasRole(ApplicationUserRole.STUDENT.name())
+                        .requestMatchers("/api/**").hasRole(ApplicationUserRole.STUDENT.name())/*role based auth */
                         .anyRequest().authenticated())
                 .httpBasic();
         return http.build();
