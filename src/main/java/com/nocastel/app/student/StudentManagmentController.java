@@ -1,5 +1,8 @@
 package com.nocastel.app.student;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,21 +14,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(path = "api/student")
-public class StudentController {
+@RequestMapping(path = "/managment/api/students")
+public class StudentManagmentController {
+
     private final StudentService studentService;
 
-    public StudentController(StudentService studentService) {
+    @Autowired
+    public StudentManagmentController(StudentService studentService) {
         this.studentService = studentService;
     }
 
-    @GetMapping(path = "{studentId}")
-    Student getStudent(@PathVariable("studentId") Long studentId) {
-        return studentService.getStudents().stream()
-        .filter(student -> studentId.equals(student.getId()))
-        .findFirst()
-        .orElseThrow(() -> new IllegalStateException());
-
+    @GetMapping
+    List<Student> getStudents() {
+        return studentService.getStudents();
     }
 
     @PostMapping
@@ -43,10 +44,6 @@ public class StudentController {
             @PathVariable("studentId") Long studentId,
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String email) {
-                studentService.updateStudent(studentId,name,email);
+        studentService.updateStudent(studentId, name, email);
     }
-
-
-    
-
 }
