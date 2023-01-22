@@ -37,11 +37,11 @@ public class ApplicatonSecurityConfiguraion {
                                                 .hasRole(ApplicationUserRole.STUDENT.name())/* role based auth */
                                                 /* authorities */
                                                 .requestMatchers(HttpMethod.DELETE, "/managment/api/**")
-                                                .hasAuthority(COURSE_WRITE.name())
+                                                .hasAuthority(COURSE_WRITE.getPermission())
                                                 .requestMatchers(HttpMethod.POST, "/managment/api/**")
-                                                .hasAuthority(COURSE_WRITE.name())
+                                                .hasAuthority(COURSE_WRITE.getPermission())
                                                 .requestMatchers(HttpMethod.PUT, "/managment/api/**")
-                                                .hasAuthority(COURSE_WRITE.name())
+                                                .hasAuthority(COURSE_WRITE.getPermission())
                                                 .requestMatchers(HttpMethod.GET, "/managment/api/**")
                                                 .hasAnyRole(ADMIN.name(), TRAINEE.name())
                                                 .anyRequest().authenticated())
