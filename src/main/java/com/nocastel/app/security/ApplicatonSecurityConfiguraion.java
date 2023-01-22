@@ -3,7 +3,7 @@ package com.nocastel.app.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
+// import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -13,7 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
-import static com.nocastel.app.security.ApplicationUserPermission.*;
+// import static com.nocastel.app.security.ApplicationUserPermission.*;
 import static com.nocastel.app.security.ApplicationUserRole.*;
 
 @Configuration
@@ -36,14 +36,14 @@ public class ApplicatonSecurityConfiguraion {
                                                 .requestMatchers("/api/**")
                                                 .hasRole(ApplicationUserRole.STUDENT.name())/* role based auth */
                                                 /* authorities */
-                                                .requestMatchers(HttpMethod.DELETE, "/managment/api/**")
-                                                .hasAuthority(COURSE_WRITE.getPermission())
-                                                .requestMatchers(HttpMethod.POST, "/managment/api/**")
-                                                .hasAuthority(COURSE_WRITE.getPermission())
-                                                .requestMatchers(HttpMethod.PUT, "/managment/api/**")
-                                                .hasAuthority(COURSE_WRITE.getPermission())
-                                                .requestMatchers(HttpMethod.GET, "/managment/api/**")
-                                                .hasAnyRole(ADMIN.name(), TRAINEE.name())
+                                                // .requestMatchers(HttpMethod.DELETE, "/managment/api/**")
+                                                // .hasAuthority(COURSE_WRITE.getPermission())
+                                                // .requestMatchers(HttpMethod.POST, "/managment/api/**")
+                                                // .hasAuthority(COURSE_WRITE.getPermission())
+                                                // .requestMatchers(HttpMethod.PUT, "/managment/api/**")
+                                                // .hasAuthority(COURSE_WRITE.getPermission())
+                                                // .requestMatchers(HttpMethod.GET, "/managment/api/**")
+                                                // .hasAnyRole(ADMIN.name(), TRAINEE.name())
                                                 .anyRequest().authenticated())
                                 .httpBasic();
                 return http.build();
