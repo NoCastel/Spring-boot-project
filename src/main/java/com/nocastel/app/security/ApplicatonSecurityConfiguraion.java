@@ -35,7 +35,7 @@ public class ApplicatonSecurityConfiguraion {
                                                 .requestMatchers("/index.html", "/css/*", "/js/*").permitAll()
                                                 .requestMatchers("/api/**")
                                                 .hasRole(ApplicationUserRole.STUDENT.name())/* role based auth */
-                                                /*authorities*/
+                                                /* authorities */
                                                 .requestMatchers(HttpMethod.DELETE, "/managment/api/**")
                                                 .hasAuthority(COURSE_WRITE.name())
                                                 .requestMatchers(HttpMethod.POST, "/managment/api/**")
@@ -43,7 +43,7 @@ public class ApplicatonSecurityConfiguraion {
                                                 .requestMatchers(HttpMethod.PUT, "/managment/api/**")
                                                 .hasAuthority(COURSE_WRITE.name())
                                                 .requestMatchers(HttpMethod.GET, "/managment/api/**")
-                                                // .hasAnyRole(ADMIN.name(), TRAINEE.name())
+                                                .hasAnyRole(ADMIN.name(), TRAINEE.name())
                                                 .anyRequest().authenticated())
                                 .httpBasic();
                 return http.build();
@@ -54,17 +54,20 @@ public class ApplicatonSecurityConfiguraion {
                 UserDetails userJaneDoe = User.builder()
                                 .username("janedoe")
                                 .password(passwordEncoder.encode("student123"))
-                                .roles(ApplicationUserRole.STUDENT.name())
+                                // .roles(ApplicationUserRole.STUDENT.name())
+                                .authorities(STUDENT.grantedAuthorities())
                                 .build();
                 UserDetails kevin = User.builder()
                                 .username("kevin")
                                 .password(passwordEncoder.encode("admin123"))
-                                .roles(ApplicationUserRole.ADMIN.name())
+                                // .roles(ApplicationUserRole.ADMIN.name())
+                                .authorities(ADMIN.grantedAuthorities())
                                 .build();
                 UserDetails angela = User.builder()
                                 .username("angela")
                                 .password(passwordEncoder.encode("trainee123"))
-                                .roles(ApplicationUserRole.TRAINEE.name())
+                                // .roles(ApplicationUserRole.TRAINEE.name())
+                                .authorities(TRAINEE.grantedAuthorities())
                                 .build();
                 return new InMemoryUserDetailsManager(userJaneDoe, kevin, angela);
         }
