@@ -49,6 +49,7 @@ public class ApplicatonSecurityConfiguraion {
                                                 .anyRequest().authenticated()
                                                 ) 
                                 .formLogin().loginPage("/login")
+                                .defaultSuccessUrl("/courses", true)
                                 ;
                 return http.build();
         }

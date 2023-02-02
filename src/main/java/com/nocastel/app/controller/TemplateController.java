@@ -8,7 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/")
 public class TemplateController {
     @GetMapping("login")
-    public String getLoginView() {
+    public String getLogin() {
         return "login";
+    }
+    @GetMapping("courses")
+    public String getCourses() {
+        return "courses";
     }
 }
