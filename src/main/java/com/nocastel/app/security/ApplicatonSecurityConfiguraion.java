@@ -10,14 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.web.DefaultSecurityFilterChain;
-// import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
-// import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
-import org.springframework.security.web.csrf.CsrfTokenRequestHandler;
-import org.springframework.security.web.csrf.XorCsrfTokenRequestAttributeHandler;
 
 import static com.nocastel.app.security.ApplicationUserRole.*;
 
@@ -33,42 +26,30 @@ public class ApplicatonSecurityConfiguraion {
         }
 
         @Bean
-        DefaultSecurityFilterChain springSecurity(HttpSecurity http) throws Exception {
-                CsrfTokenRequestAttributeHandler requestHandler = new CsrfTokenRequestAttributeHandler();
-                // set the name of the attribute the CsrfToken will be populated on
-                requestHandler.setCsrfRequestAttributeName("_csrf");
+        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+                /*
+                 * //these lines are needed for the csrf protection, for now csrf is disabled.
+                 * CookieCsrfTokenRepository tokenRepository =
+                 * CookieCsrfTokenRepository.withHttpOnlyFalse();
+                 * XorCsrfTokenRequestAttributeHandler delegate = new
+                 * XorCsrfTokenRequestAttributeHandler();
+                 * delegate.setCsrfRequestAttributeName("_csrf");
+                 * CsrfTokenRequestHandler requestHandler = delegate::handle;
+                 */
                 http
-                                // ...
-                                .csrf((csrf) -> csrf
-                                                .csrfTokenRequestHandler(requestHandler));
-                return http.build();
-        }
-
-        @Bean
-        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-                CookieCsrfTokenRepository tokenRepository = CookieCsrfTokenRepository.withHttpOnlyFalse();
-                XorCsrfTokenRequestAttributeHandler delegate = new XorCsrfTokenRequestAttributeHandler();
-                // set the name of the attribute the CsrfToken will be populated on
-                delegate.setCsrfRequestAttributeName("_csrf");
-                // Use only the handle() method of XorCsrfTokenRequestAttributeHandler and the
-                // default implementation of resolveCsrfTokenValue() from
-                // CsrfTokenRequestHandler
-                CsrfTokenRequestHandler requestHandler = delegate::handle;
-
-                http
-
-                                // .csrf(csrf -> csrf.disable() )
-                                .csrf((csrf) -> csrf
-                                                .csrfTokenRepository(tokenRepository)
-                                                .csrfTokenRequestHandler(requestHandler))
+                                .csrf((csrf) -> csrf.disable()
+                                // Enable later
+                                // .csrfTokenRepository(tokenRepository)
+                                // .csrfTokenRequestHandler(requestHandler)
+                                )
                                 .authorizeHttpRequests(authorize -> authorize
-                                                .requestMatchers("/index.html", "/css/*", "/js/*").permitAll()
+                                                .requestMatchers("/index.html", "/css/*", "/js/*", "/login").permitAll()
                                                 .requestMatchers("/api/**")
                                                 .hasRole(ApplicationUserRole.STUDENT.name())
-                                                .anyRequest().authenticated())
-                                // .requestMatchers(HttpMethod.DELETE,
-                                // "/managment/api/**").hasAuthority(COURSE_WRITE.getPermission())
-                                .httpBasic();
+                                                .anyRequest().authenticated()
+                                                ) 
+                                .formLogin().loginPage("/login")
+                                ;
                 return http.build();
         }
 
