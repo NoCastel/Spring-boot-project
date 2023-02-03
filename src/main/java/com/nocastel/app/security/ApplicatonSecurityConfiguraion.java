@@ -11,8 +11,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import static com.nocastel.app.security.ApplicationUserRole.*;
+
+import java.util.concurrent.TimeUnit;
 
 @Configuration
 @EnableWebSecurity
@@ -51,7 +54,16 @@ public class ApplicatonSecurityConfiguraion {
                                 .formLogin().loginPage("/login")
                                 .defaultSuccessUrl("/courses", true)
                                 .and()
-                                .rememberMe()
+                                .rememberMe().tokenValiditySeconds((int)TimeUnit.DAYS.toSeconds(40))
+                                // .key()//set your custom key instead of the default remember me key
+                                .and()
+                                .logout()
+                                .logoutUrl("/logout")
+                                .clearAuthentication(true)
+                                .invalidateHttpSession(true)
+                                .deleteCookies("remember-me", "JSESSIONID")
+                                .logoutSuccessUrl("/login")
+                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "POST"))
                                 ;
                 return http.build();
         }
