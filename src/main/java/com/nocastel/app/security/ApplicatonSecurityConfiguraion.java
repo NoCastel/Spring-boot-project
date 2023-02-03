@@ -50,6 +50,8 @@ public class ApplicatonSecurityConfiguraion {
                                                 ) 
                                 .formLogin().loginPage("/login")
                                 .defaultSuccessUrl("/courses", true)
+                                .and()
+                                .rememberMe()
                                 ;
                 return http.build();
         }
